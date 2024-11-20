@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+@layer components {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Sidebar styling */
+  aside {
+    @apply bg-neutral-800 text-gray-200 h-screen fixed left-0 w-1/4 md:w-1/5 overflow-y-auto no-scrollbar;
+  }
+
+  .category-button {
+    @apply block py-2 px-4 rounded-md text-gray-200 bg-neutral-800 hover:bg-indigo-400 hover:text-white transition duration-200;
+  }
+  .category-button.active {
+    @apply bg-indigo-100 text-white;
+  }
+  .bg-zinc-100:focus, .bg-zinc-100:active {
+    @apply bg-indigo-100 text-white !important;
+  }
+  .bg-zinc-100 {
+    @apply bg-neutral-800 text-gray-200 !important;
+  }
+}
+
+/* Dark theme styling */
+@layer base {
+  body {
+    @apply bg-neutral-900 text-gray-200 !important;
+  }
+  .card, .container, .event-card, .betslip-card, .market-row, .event-listing,
+  .fight-winner-row, .fight-row, .all-markets-btn, .bets-summary-card,
+  .event-container, .row, .column, .section, .block, .grid,
+  .event-section, .match-section, .bet-options, .odds-section {
+    @apply bg-neutral-800 text-gray-200 border border-neutral-700 !important;
+  }
+
+  button, .all-markets-btn {
+    @apply bg-neutral-800 text-white hover:bg-neutral-700 !important;
+  }
+
+  .bg-zinc-50, .bg-zinc-200, .bg-slate-200 {
+    @apply bg-neutral-800 text-gray-200 border border-neutral-700 !important;
+  }
+
+  .fixed.bottom-4.left-4.w-full.max-w-72, .betslip-card, .popup-window {
+    @apply bg-neutral-800 text-gray-200 border border-neutral-700 !important;
+  }
+
+  input, select, textarea {
+    @apply bg-neutral-700 text-white border-neutral-600 !important;
+  }
+
+  a {
+    @apply text-indigo-400 hover:text-indigo-500 !important;
+  }
+
+  .rounded-full {
+    @apply border border-white !important;
+  }
+
+  .p-1 {
+    @apply px-2 py-1 text-center !important;
+  }
+
+  .bg-slate-200.disabled {
+    @apply bg-neutral-900 text-gray-500 cursor-not-allowed !important;
+  }
+
+  nav {
+    @apply bg-neutral-800 text-gray-200 !important;
+  }
+}
+
+.page-content {
+  @apply min-h-screen flex flex-col justify-center items-center bg-black text-neutral-300 p-6 !important;
+}
+
+.page-content h1 {
+  @apply text-4xl font-bold mb-6 text-center !important;
+}
+
+.page-content p, .page-content ul {
+  @apply text-lg mb-4 text-center !important;
+}
+
+.page-content ul {
+  @apply list-disc list-inside mb-6 !important;
+}

@@ -1,22 +1,30 @@
 'use client';
+
 import { useParams } from 'next/navigation';
-import { useGame, useActiveMarkets, useResolvedMarkets, useGameStatus, useBetsSummaryBySelection } from '@azuro-org/sdk';
+import {
+  useGame,
+  useActiveMarkets,
+  useResolvedMarkets,
+  useGameStatus,
+  useBetsSummaryBySelection,
+} from '@azuro-org/sdk';
 import { type GameQuery, GameStatus } from '@azuro-org/toolkit';
 
 import { GameInfo, GameMarkets } from '@/components';
 import { useAccount } from 'wagmi';
 
-type MarketsProps = {
-  gameId: string;
-  gameStatus: GameStatus;
-  searchQuery?: string;  // Added search query
-};
+// Type definitions
+type GamePageProps = {};
 
-const ResolvedMarkets: React.FC<MarketsProps> = ({ gameId, gameStatus, searchQuery }) => {
+// ResolvedMarkets Component
+const ResolvedMarkets: React.FC<{ gameId: string; gameStatus: GameStatus }> = ({
+  gameId,
+  gameStatus,
+}) => {
   const { address } = useAccount();
   const { groupedMarkets, loading } = useResolvedMarkets({ gameId });
   const { betsSummary } = useBetsSummaryBySelection({
-    account: address!,
+    account: address!, // Fallback to an empty string if address is undefined
     gameId,
     gameStatus,
   });
@@ -26,22 +34,21 @@ const ResolvedMarkets: React.FC<MarketsProps> = ({ gameId, gameStatus, searchQue
   }
 
   if (!groupedMarkets?.length) {
-    return <div>Empty</div>;
+    return <div>No resolved markets available</div>;
   }
-
-  // Filter markets by search query
-  const filteredMarkets = groupedMarkets.filter((market) =>
-    market.name.toLowerCase().includes(searchQuery?.toLowerCase() || '')
-  );
 
   return (
     <div className="mt-12">
-      <GameMarkets markets={filteredMarkets} betsSummary={betsSummary} isResult />
+      <GameMarkets markets={groupedMarkets} betsSummary={betsSummary} isResult />
     </div>
   );
 };
 
-const ActiveMarkets: React.FC<MarketsProps> = ({ gameId, gameStatus, searchQuery }) => {
+// ActiveMarkets Component
+const ActiveMarkets: React.FC<{ gameId: string; gameStatus: GameStatus }> = ({
+  gameId,
+  gameStatus,
+}) => {
   const { loading, markets } = useActiveMarkets({
     gameId,
     gameStatus,
@@ -52,39 +59,30 @@ const ActiveMarkets: React.FC<MarketsProps> = ({ gameId, gameStatus, searchQuery
     return <div>Loading...</div>;
   }
 
-  if (!markets) {
-    return <div>Empty</div>;
+  if (!markets?.length) {
+    return <div>No active markets available</div>;
   }
 
-  // Filter markets by search query
-  const filteredMarkets = markets.filter((market) =>
-    market.name.toLowerCase().includes(searchQuery?.toLowerCase() || '')
-  );
-
-  return <GameMarkets markets={filteredMarkets} />;
+  return <GameMarkets markets={markets} />;
 };
 
-const Markets: React.FC<MarketsProps> = (props) => {
-  const { gameId, gameStatus, searchQuery } = props;
-
+// Markets Component
+const Markets: React.FC<{ gameId: string; gameStatus: GameStatus }> = ({
+  gameId,
+  gameStatus,
+}) => {
   if (gameStatus === GameStatus.Resolved) {
-    return <ResolvedMarkets {...props} searchQuery={searchQuery} />;
+    return <ResolvedMarkets gameId={gameId} gameStatus={gameStatus} />;
   }
 
-  return (
-    <div className="mt-12">
-      <ActiveMarkets {...props} searchQuery={searchQuery} />
-    </div>
-  );
+  return <ActiveMarkets gameId={gameId} gameStatus={gameStatus} />;
 };
 
-type ContentProps = {
-  game: GameQuery['games'][0];
-  isGameInLive: boolean;
-  searchQuery?: string;
-};
-
-const Content: React.FC<ContentProps> = ({ game, isGameInLive, searchQuery }) => {
+// Content Component
+const Content: React.FC<{ game: GameQuery['games'][0]; isGameInLive: boolean }> = ({
+  game,
+  isGameInLive,
+}) => {
   const { status: gameStatus } = useGameStatus({
     startsAt: +game.startsAt,
     graphStatus: game.status,
@@ -94,16 +92,21 @@ const Content: React.FC<ContentProps> = ({ game, isGameInLive, searchQuery }) =>
   return (
     <>
       <GameInfo game={game} />
-      <Markets gameId={game.gameId} gameStatus={gameStatus} searchQuery={searchQuery} />
+      <Markets gameId={game.gameId} gameStatus={gameStatus} />
     </>
   );
 };
 
-export default function Game({ searchQuery }: { searchQuery: string }) {
-  const params = useParams();
+// Default Export Component for Next.js
+const Page: React.FC<GamePageProps> = () => {
+  const params = useParams<{ id: string }>();
+
+  if (!params?.id) {
+    return <div>Invalid game ID</div>;
+  }
 
   const { loading, game, isGameInLive } = useGame({
-    gameId: params.id as string,
+    gameId: params.id,
   });
 
   if (loading) {
@@ -114,5 +117,7 @@ export default function Game({ searchQuery }: { searchQuery: string }) {
     return <div>Game info not found</div>;
   }
 
-  return <Content game={game} isGameInLive={isGameInLive} searchQuery={searchQuery} />;
-}
+  return <Content game={game} isGameInLive={isGameInLive} />;
+};
+
+export default Page;

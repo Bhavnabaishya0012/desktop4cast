@@ -1,4 +1,10 @@
-export default function EventsPage({ searchQuery }: { searchQuery: string }) {
+'use client';
+
+import React, { useState } from 'react';
+
+export default function EventsPage() {
+  const [searchQuery, setSearchQuery] = useState('');
+
   const events = [
     { id: 1, name: 'Football Match: Team A vs Team B' },
     { id: 2, name: 'MMA Fight: Fighter X vs Fighter Y' },
@@ -12,8 +18,16 @@ export default function EventsPage({ searchQuery }: { searchQuery: string }) {
 
   return (
     <div className="container pt-8 pb-10 bg-black text-gray-100">
-      <h1 className="text-white">Events</h1>
+      <h1 className="text-white mb-4">Events</h1>
       <div className="bg-black text-gray-100 p-4 rounded-lg">
+        {/* Search Input */}
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search events..."
+          className="w-full p-2 rounded-lg bg-neutral-700 text-white mb-4"
+        />
         {/* Show dropdown suggestions when user types */}
         {searchQuery && (
           <ul className="bg-neutral-700 p-2 rounded-lg text-white">

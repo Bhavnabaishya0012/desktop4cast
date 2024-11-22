@@ -83,7 +83,7 @@ export function League(props: LeagueProps) {
 
   const params = useParams()
 
-  const isLeaguePage = params.league
+  const isLeaguePage = params?.league ? true : false;
   
   return (
     <div

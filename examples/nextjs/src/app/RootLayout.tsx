@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Header, Betslip, BetsSummary } from '@/components';
 import '@rainbow-me/rainbowkit/styles.css';
 import './globals.css';
+import TopNav from '@/components/TopNav';
+import Footer from '@/components/Footer';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     const [isSidebarOpen, setSidebarOpen] = useState(false);

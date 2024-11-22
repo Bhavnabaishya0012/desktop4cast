@@ -41,8 +41,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const matchesTeams = game.participants.some(team => team.name.toLowerCase().includes(searchQuery));
 
             // Check for countries as teams or venues
-            const matchesCountries = game.participants.some(participant => participant.country.toLowerCase().includes(searchQuery)) ||
-                game.venue?.country?.toLowerCase().includes(searchQuery);
+            const matchesCountries = game.participants.some(participant =>
+                participant.name.toLowerCase().includes(searchQuery ?? '')
+            );                      
 
             // Check if the search matches categories or subcategories including Politics
             const matchesCategory = categories.some(category =>

@@ -16,7 +16,7 @@ export function Sport(props: SportProps) {
   const { countries } = sport
   const params = useParams()
 
-  const isSportPage = params.sport !== 'top'
+  const isSportPage = params && params.sport === 'top';
 
   return (
     <div

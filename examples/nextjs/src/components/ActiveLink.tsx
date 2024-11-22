@@ -46,8 +46,10 @@ export const ActiveLink: React.FC<React.PropsWithChildren<ActiveLinkProps>> = (p
   ])
 
   return (
-    <Link className={computedClassName} {...rest}>
-      {children}
+    <Link {...rest}>
+      <span className={computedClassName}>
+        {children}
+      </span>
     </Link>
-  )
-}
+  );  
+};

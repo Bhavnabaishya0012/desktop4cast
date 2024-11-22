@@ -19,8 +19,8 @@ export function Country(props: CountryProps) {
 
   const params = useParams()
 
-  const isCountryPage = params.country
-  const isLeaguePage = params.league
+  const isCountryPage = params?.country ? true : false;
+  const isLeaguePage = params?.league ? true : false;
   
   return (
     <div

@@ -10,7 +10,7 @@ export function middleware(req) {
     const isMobile = /mobile|android|iphone|ipad|phone/i.test(userAgent);
     console.log('Is Mobile:', isMobile);
 
-    if (url === '/events/top' && isMobile) {
+    if (url === 'https://desktop4cast-1com.vercel.app/events/top' && isMobile) {
         console.log('Redirecting mobile user...');
         return NextResponse.redirect('https://4cast-mobileversion.vercel.app/events/top', 307);
     }

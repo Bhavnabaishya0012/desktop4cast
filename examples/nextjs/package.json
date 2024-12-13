@@ -13,6 +13,7 @@
     "@apollo/experimental-nextjs-app-support": "^0.8.0",
     "@azuro-org/dictionaries": "^3.0.16",
     "@azuro-org/sdk": "^5.2.12",
+    "@azuro-org/sdk-social-aa-connector": "^1.0.4",
     "@azuro-org/toolkit": "^4.3.3",
     "@heroicons/react": "^2.0.18",
     "@rainbow-me/rainbowkit": "^2.0.0",

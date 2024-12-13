@@ -1,37 +1,27 @@
-'use client'
+'use client';
 import { useEffect } from 'react';
 import { useChain } from '@azuro-org/sdk';
-import { type ChainId } from '@azuro-org/toolkit';
-import { polygonAmoy, gnosis, polygon, chiliz, spicy } from 'viem/chains';
+import { polygon } from 'viem/chains';
 
 export function SelectAppChain() {
-  const { appChain, setAppChainId } = useChain();
+  const { setAppChainId } = useChain();
 
-  // On component mount, check if a chain is already saved in localStorage
+  // On component mount, permanently set the chain to Polygon
   useEffect(() => {
-    const savedChainId = localStorage.getItem('selectedChainId');
-    if (savedChainId) {
-      setAppChainId(+savedChainId as ChainId); // Set the chain based on saved value
-    }
+    setAppChainId(polygon.id); // Set the chain to Polygon
+    localStorage.setItem('selectedChainId', polygon.id.toString()); // Save it to localStorage (optional)
   }, [setAppChainId]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const chainId = +event.target.value as ChainId;
-    setAppChainId(chainId);
-    localStorage.setItem('selectedChainId', event.target.value); // Save the selected chain in localStorage
-  };
-
   return (
-    <select
-      className="mr-4 cursor-pointer py-1 mt-1"
-      value={appChain.id}
-      onChange={handleChange}
-    >
-      <option value={polygonAmoy.id}>{polygonAmoy.name}</option>
-      <option value={gnosis.id}>{gnosis.name}</option>
-      <option value={polygon.id}>{polygon.name}</option>
-      <option value={chiliz.id}>{chiliz.name}</option>
-      <option value={spicy.id}>{spicy.name}</option>
-    </select>
+    <div className="mr-4 py-1 mt-1">
+      <div
+        className="rounded-full border border-gray-600 px-4 py-2 text-sm font-medium text-white bg-neutral-800 hover:bg-neutral-600 transition-all"
+        style={{
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Adds subtle depth
+        }}
+      >
+        {polygon.name}
+      </div>
+    </div>
   );
 }
